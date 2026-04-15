@@ -121,3 +121,71 @@ try:
 
 except FileNotFoundError:
     st.error("CSV file not found. Ensure 'yearly_deaths_by_clinic-1.csv' is in your GitHub repository.")
+
+
+import streamlit as st
+import pandas as pd
+import plotly.express as px
+
+# --- 1. Title and Description ---
+st.title("The Semmelweis Analysis: Handwashing and Mortality")
+st.markdown("""
+Hover over the charts below to see the exact numbers for births, deaths, and mortality rates.
+""")
+
+# --- 2. Load Data ---
+try:
+    # Code snippet assisted by Gemini AI
+    df = pd.read_csv('yearly_deaths_by_clinic-1.csv')
+    
+    # Calculate death rate
+    df['Death Rate (%)'] = (df['Deaths'] / df['Birth']) * 100
+
+    # --- 3. Sidebar Filter ---
+    st.sidebar.header("Filter Options")
+    selected_clinic = st.sidebar.multiselect(
+        "Select Clinics:",
+        options=df['Clinic'].unique(),
+        default=df['Clinic'].unique()
+    )
+    filtered_df = df[df['Clinic'].isin(selected_clinic)]
+
+    # --- 4. Interactive Visualizations (Plotly) ---
+    
+    # Chart 1: Interactive Line Chart
+    st.subheader("Annual Death Rate Trend")
+    # px.line automatically includes tooltips
+    fig1 = px.line(
+        filtered_df, 
+        x='Year', 
+        y='Death Rate (%)', 
+        color='Clinic',
+        markers=True,
+        hover_data={'Year': True, 'Death Rate (%)': ':.2f', 'Deaths': True},
+        title="Death Rate Over Time"
+    )
+    st.plotly_chart(fig1, use_container_width=True)
+
+    # Chart 2: Interactive Bar Chart
+    st.subheader("Births vs. Deaths Comparison")
+    fig2 = px.bar(
+        filtered_df, 
+        x='Year', 
+        y='Deaths', 
+        color='Clinic',
+        barmode='group',
+        hover_data=['Birth', 'Deaths'],
+        title="Number of Deaths per Year"
+    )
+    st.plotly_chart(fig2, use_container_width=True)
+
+    # --- 5. Findings ---
+    st.divider()
+    st.info("""
+    **Findings:** By hovering over the data points, we can see the exact impact of the 1847 
+    handwashing intervention. The tooltips show that while births remained high, the 
+    number of deaths in Clinic 1 plummeted compared to previous years.
+    """)
+
+except FileNotFoundError:
+    st.error("CSV file not found. Check your GitHub repository for 'yearly_deaths_by_clinic-1.csv'.")
