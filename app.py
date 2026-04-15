@@ -11,6 +11,6 @@ This app explores the historical data from Dr. Ignaz Semmelweis, who discovered 
 
 
 # Replace 'your_file_name.csv' with the actual path to your CSV file
-df = pd.read_csv('/yearly_deaths_by_clinic-1.csv')
+df = pd.read_csv('yearly_deaths_by_clinic-1.csv')
 
 display(df)
