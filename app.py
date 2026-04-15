@@ -15,10 +15,6 @@ This app explores the historical data from Dr. Ignaz Semmelweis, who discovered 
 
 # Replace 'your_file_name.csv' with the actual path to your CSV file
 df = pd.read_csv('yearly_deaths_by_clinic-1.csv')
-st.dataframe(df)
-
-
-
 
 # --- Data Processing (Assisted by Gemini AI) ---
 # Calculate death rate (deaths per 100 births)
@@ -29,33 +25,6 @@ clinic_death_rate = df.groupby('Clinic')['death_rate'].mean().reset_index()
 
 # --- Create the Visualization ---
 st.subheader("Average Death Rate by Clinic")
-
-# Create the figure object explicitly
-fig, ax = plt.subplots(figsize=(8, 6))
-
-import plotly.express as px
-
-# Create the interactive bar chart
-fig = px.bar(
-    clinic_death_rate, 
-    x='Clinic', 
-    y='death_rate', 
-    color='Clinic',
-    title='Average Death Rate by Clinic (per 100 Births)',
-    labels={'death_rate': 'Average Death Rate (%)'},
-    color_discrete_sequence=px.colors.sequential.Viridis # Matches your 'viridis' palette
-)
-
-# This command adds the interactive plot to your app
-st.plotly_chart(fig, use_container_width=True)
-
-# --- Short Explanation (Required for your assignment) ---
-st.write("""
-**Findings:** The visualization clearly shows that Clinic 1 had a significantly higher average 
-death rate compared to Clinic 2. This discrepancy was the key observation that led Dr. Semmelweis 
-to investigate the differences in medical practices between the two wards.
-""")
-
 
 
 # --- 1. Title and Description ---
@@ -118,6 +87,9 @@ try:
     **Findings:** By hovering over the data points, we can see the exact impact of the 1847 
     handwashing intervention. The tooltips show that while births remained high, the 
     number of deaths in Clinic 1 plummeted compared to previous years.
+    **Findings:** The visualization clearly shows that Clinic 1 had a significantly higher average 
+death rate compared to Clinic 2. This discrepancy was the key observation that led Dr. Semmelweis 
+to investigate the differences in medical practices between the two wards.
     """)
 
 except FileNotFoundError:
