@@ -34,9 +34,9 @@ st.subheader("Average Death Rate by Clinic")
 fig, ax = plt.subplots(figsize=(8, 6))
 
 sns.barplot(
-    x='clinic', 
+    x='Clinic', 
     y='death_rate', 
-    hue='clinic', 
+    hue='Clinic', 
     data=clinic_death_rate, 
     palette='viridis', 
     legend=False,
