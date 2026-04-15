@@ -58,3 +58,66 @@ st.write("""
 death rate compared to Clinic 2. This discrepancy was the key observation that led Dr. Semmelweis 
 to investigate the differences in medical practices between the two wards.
 """)
+
+import streamlit as st
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# --- 1. Title and Description ---
+st.title("The Semmelweis Analysis: Handwashing and Mortality")
+st.markdown("""
+This app explores historical data from the Vienna General Hospital (1841-1849). 
+Dr. Ignaz Semmelweis noticed a horrifying difference in death rates between two clinics, 
+leading to one of the most important medical discoveries in history.
+""")
+
+# --- 2. Load Data ---
+# Code snippet assisted by Gemini AI
+try:
+    df = pd.read_csv('yearly_deaths_by_clinic-1.csv')
+    
+    # Calculate death rate (Percentage of deaths per birth)
+    df['Death Rate (%)'] = (df['Deaths'] / df['Birth']) * 100
+
+    # --- 3. Optional Filter (Assignment Requirement) ---
+    st.sidebar.header("Filter Options")
+    selected_clinic = st.sidebar.multiselect(
+        "Select Clinics to Compare:",
+        options=df['Clinic'].unique(),
+        default=df['Clinic'].unique()
+    )
+    
+    # Filter the dataframe based on selection
+    filtered_df = df[df['Clinic'].isin(selected_clinic)]
+
+    # --- 4. Visualizations ---
+    
+    # Chart 1: Line Chart showing Trends over Time
+    st.subheader("Mortality Rates Over the Years")
+    fig1, ax1 = plt.subplots(figsize=(10, 5))
+    sns.lineplot(data=filtered_df, x='Year', y='Death Rate (%)', hue='Clinic', marker='o', ax=ax1)
+    ax1.set_title("Annual Death Rate Trend by Clinic")
+    st.pyplot(fig1)
+
+    # Chart 2: Bar Chart showing Total Deaths vs Births
+    st.subheader("Total Births vs. Total Deaths")
+    fig2, ax2 = plt.subplots(figsize=(10, 5))
+    # Comparison of raw numbers
+    clinic_totals = filtered_df.groupby('Clinic')[['Birth', 'Deaths']].sum().reset_index()
+    clinic_totals_melted = clinic_totals.melt(id_vars='Clinic', var_name='Type', value_name='Count')
+    sns.barplot(data=clinic_totals_melted, x='Clinic', y='Count', hue='Type', ax=ax2)
+    st.pyplot(fig2)
+
+    # --- 5. Short Explanation of Findings (Assignment Requirement) ---
+    st.divider()
+    st.subheader("Analysis Findings")
+    st.write("""
+    The visualizations indicate that **clinic 1** consistently had a much higher death rate 
+    than **clinic 2** during the early 1840s. A sharp decline is visible in the later years 
+    for clinic 1, which corresponds historically to the introduction of mandatory hand-washing 
+    with chlorinated lime solutions.
+    """)
+
+except FileNotFoundError:
+    st.error("CSV file not found. Ensure 'yearly_deaths_by_clinic-1.csv' is in your GitHub repository.")
