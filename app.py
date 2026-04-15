@@ -3,6 +3,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
+import seaborn as sns
+
 # --- 1. Title and Description ---
 st.title("The Importance of Handwashing")
 st.markdown("""
@@ -16,10 +18,7 @@ df = pd.read_csv('yearly_deaths_by_clinic-1.csv')
 st.dataframe(df)
 
 
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+
 
 # --- Data Processing (Assisted by Gemini AI) ---
 # Calculate death rate (deaths per 100 births)
@@ -34,24 +33,21 @@ st.subheader("Average Death Rate by Clinic")
 # Create the figure object explicitly
 fig, ax = plt.subplots(figsize=(8, 6))
 
-sns.barplot(
+import plotly.express as px
+
+# Create the interactive bar chart
+fig = px.bar(
+    clinic_death_rate, 
     x='Clinic', 
     y='death_rate', 
-    hue='Clinic', 
-    data=clinic_death_rate, 
-    palette='viridis', 
-    legend=False,
-    ax=ax  # Tell seaborn to use the 'ax' we just created
+    color='Clinic',
+    title='Average Death Rate by Clinic (per 100 Births)',
+    labels={'death_rate': 'Average Death Rate (%)'},
+    color_discrete_sequence=px.colors.sequential.Viridis # Matches your 'viridis' palette
 )
 
-ax.set_title('Average Death Rate by Clinic (per 100 Births)')
-ax.set_xlabel('Clinic')
-ax.set_ylabel('Average Death Rate (%)')
-ax.set_ylim(0, clinic_death_rate['death_rate'].max() * 1.1)
-ax.grid(axis='y', linestyle='--', alpha=0.7)
-
-# --- Display the plot in Streamlit ---
-st.pyplot(fig) 
+# This command adds the interactive plot to your app
+st.plotly_chart(fig, use_container_width=True)
 
 # --- Short Explanation (Required for your assignment) ---
 st.write("""
@@ -60,10 +56,7 @@ death rate compared to Clinic 2. This discrepancy was the key observation that l
 to investigate the differences in medical practices between the two wards.
 """)
 
-import streamlit as st
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+
 
 # --- 1. Title and Description ---
 st.title("The Semmelweis Analysis: Handwashing and Mortality")
@@ -71,15 +64,6 @@ st.markdown("""
 This app explores historical data from the Vienna General Hospital (1841-1849). 
 Dr. Ignaz Semmelweis noticed a horrifying difference in death rates between two clinics, 
 leading to one of the most important medical discoveries in history.
-""")
-
-
-
-
-# --- 1. Title and Description ---
-st.title("The Semmelweis Analysis: Handwashing and Mortality")
-st.markdown("""
-Hover over the charts below to see the exact numbers for births, deaths, and mortality rates.
 """)
 
 # --- 2. Load Data ---
