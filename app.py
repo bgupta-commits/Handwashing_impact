@@ -16,28 +16,17 @@ This app explores the historical data from Dr. Ignaz Semmelweis, who discovered 
 # Replace 'your_file_name.csv' with the actual path to your CSV file
 df = pd.read_csv('yearly_deaths_by_clinic-1.csv')
 
-# --- Data Processing (Assisted by Gemini AI) ---
-# Calculate death rate (deaths per 100 births)
-df['death_rate'] = (df['Deaths'] / df['Birth']) * 100
-
-# Group by clinic and calculate the mean death rate
-clinic_death_rate = df.groupby('Clinic')['death_rate'].mean().reset_index()
-
-# --- Create the Visualization ---
-st.subheader("Average Death Rate by Clinic")
-
-
 # --- 1. Title and Description ---
-st.title("The Semmelweis Analysis: Handwashing and Mortality")
+st.subheader("The Semmelweis Analysis: Handwashing and Mortality")
 st.markdown("""
-This app explores historical data from the Vienna General Hospital (1841-1849). 
+This app explores historical data from the clicnic (1841-1849). 
 Dr. Ignaz Semmelweis noticed a horrifying difference in death rates between two clinics, 
-leading to one of the most important medical discoveries in history.
+leading to one of the most important medical discoveries in history. 
 """)
 
 # --- 2. Load Data ---
 try:
-    # Code snippet assisted by Gemini AI
+    # Load Data
     df = pd.read_csv('yearly_deaths_by_clinic-1.csv')
     
     # Calculate death rate
@@ -87,9 +76,9 @@ try:
     **Findings:** By hovering over the data points, we can see the exact impact of the 1847 
     handwashing intervention. The tooltips show that while births remained high, the 
     number of deaths in Clinic 1 plummeted compared to previous years.
-    **Findings:** The visualization clearly shows that Clinic 1 had a significantly higher average 
-death rate compared to Clinic 2. This discrepancy was the key observation that led Dr. Semmelweis 
-to investigate the differences in medical practices between the two wards.
+    The visualization clearly shows that Clinic 1 had a significantly higher average 
+    death rate compared to Clinic 2. This discrepancy was the key observation that led Dr. Semmelweis 
+    to investigate the differences in medical practices between the two wards.
     """)
 
 except FileNotFoundError:
