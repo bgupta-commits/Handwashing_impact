@@ -22,7 +22,7 @@ import seaborn as sns
 
 # --- Data Processing (Assisted by Gemini AI) ---
 # Calculate death rate (deaths per 100 births)
-df['death_rate'] = (df['Deaths'] / df['Births']) * 100
+df['death_rate'] = (df['Deaths'] / df['Birth']) * 100
 
 # Group by clinic and calculate the mean death rate
 clinic_death_rate = df.groupby('Clinic')['death_rate'].mean().reset_index()
