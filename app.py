@@ -13,7 +13,7 @@ This app explores the historical data from Dr. Ignaz Semmelweis, who discovered 
 # Replace 'handwashing_data.csv' with your actual filename
 @st.cache_data
 def load_data():
-    df = pd.read_csv("handwashing_data.csv")
+    df = pd.read_csv("yearly_deaths_by_clinic-1.csv")
     # Ensure date column is datetime format
     if 'date' in df.columns:
         df['date'] = pd.to_datetime(df['date'])
